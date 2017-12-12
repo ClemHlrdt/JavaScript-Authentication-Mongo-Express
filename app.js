@@ -1,7 +1,15 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var session = require('express-session');
 var app = express();
+
+//use sessions for tracking logins
+app.use(session( {
+  secret: 'treehouse loves you',
+  resave: true,
+  saveUninitialized: false
+}));
 
 // mongodb connection
 mongoose.connect("mongodb://localhost:27017/bookworm");
@@ -17,8 +25,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 
 // view engine setup
-app.set('view engine', 'pug');
-app.set('views', __dirname + '/views');
+app.set('view engine', 'pug'); //use pug
+app.set('views', __dirname + '/views'); //reference directory for views
 
 // include routes
 var routes = require('./routes/index');
